@@ -62,8 +62,8 @@ def modify(font):
         list_namer(cff.fontNames)
         for dic in cff:
             dict_namer(dic.rawDict)
-            # dic.FamilyName = namer(dic.FamilyName)
-            # dic.FullName = namer(dic.FullName)
+            dic.FamilyName = namer(dic.FamilyName)
+            dic.FullName = namer(dic.FullName)
 
 
 path = sys.argv[1]
