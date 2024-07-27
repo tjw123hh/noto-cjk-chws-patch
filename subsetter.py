@@ -51,6 +51,8 @@ def dict_namer(di):
         di[k] = namer(di[k])
 
 def modify(font):
+    subsetter.subset(font)
+
     for record in font['name'].names:
         record.string = namer(record.string)
 
@@ -62,8 +64,6 @@ def modify(font):
             dict_namer(dic.rawDict)
             # dic.FamilyName = namer(dic.FamilyName)
             # dic.FullName = namer(dic.FullName)
-
-    subsetter.subset(font)
 
 
 path = sys.argv[1]
