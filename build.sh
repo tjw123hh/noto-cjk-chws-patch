@@ -26,6 +26,7 @@ echo "删除源文件？[Y/n]"
 read answer
 if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
     find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.otf" \) ! -iname "*Chws*" -exec rm -f {} +
+    rm android/*.woff2
 fi
 
 # zip -m Sans/SuperOTC/NotoSansCJK.ttc.zip Sans/SuperOTC/NotoSansCJK.ttc

@@ -9,44 +9,34 @@ subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［�
 
 def namer(arg):
     if type(arg) == bytes:
-        if " ".encode("utf-16-be") in arg:
-            if "CHWS Patch".encode("utf-16-be") in arg:
-                return arg
-            if "Noto Sans CJK".encode("utf-16-be") in arg:
-                return arg.replace("Noto Sans CJK".encode("utf-16-be"), "Noto Sans CJK CHWS Patch".encode("utf-16-be"))
-            if "Noto Serif CJK".encode("utf-16-be") in arg:
-                return arg.replace("Noto Serif CJK".encode("utf-16-be"), "Noto Serif CJK CHWS Patch".encode("utf-16-be"))
-            if "Noto Sans".encode("utf-16-be") in arg:
-                return arg.replace("Noto Sans".encode("utf-16-be"), "Noto Sans CHWS Patch".encode("utf-16-be"))
-            return arg.replace("Noto Serif".encode("utf-16-be"), "Noto Serif CHWS Patch".encode("utf-16-be"))
-        if "ChwsPatch".encode("utf-16-be") in arg:
-            return arg
-        if "NotoSansCJK".encode("utf-16-be") in arg:
-            return arg.replace("NotoSansCJK".encode("utf-16-be"), "NotoSansCJKChwsPatch".encode("utf-16-be"))
-        if "NotoSerifCJK".encode("utf-16-be") in arg:
-            return arg.replace("NotoSerifCJK".encode("utf-16-be"), "NotoSerifCJKChwsPatch".encode("utf-16-be"))
-        if "NotoSans".encode("utf-16-be") in arg:
-            return arg.replace("NotoSans".encode("utf-16-be"), "NotoSansChwsPatch".encode("utf-16-be"))
-        return arg.replace("NotoSerif".encode("utf-16-be"), "NotoSerifChwsPatch".encode("utf-16-be"))
+        return namer(arg.decode("utf-16-be")).encode("utf-16-be")
     if type(arg) == str:
         if " " in arg:
             if "CHWS Patch" in arg:
                 return arg
             if "Noto Sans CJK" in arg:
                 return arg.replace("Noto Sans CJK", "Noto Sans CJK CHWS Patch")
+            if "Noto Sans Mono CJK" in arg:
+                return arg.replace("Noto Sans Mono CJK", "Noto Sans Mono CJK CHWS Patch")
             if "Noto Serif CJK" in arg:
                 return arg.replace("Noto Serif CJK", "Noto Serif CJK CHWS Patch")
             if "Noto Sans" in arg:
                 return arg.replace("Noto Sans", "Noto Sans CHWS Patch")
+            if "Noto Sans Mono" in arg:
+                return arg.replace("Noto Sans Mono", "Noto Sans Mono CHWS Patch")
             return arg.replace("Noto Serif", "Noto Serif CHWS Patch")
         if "ChwsPatch" in arg:
             return arg
         if "NotoSansCJK" in arg:
             return arg.replace("NotoSansCJK", "NotoSansCJKChwsPatch")
+        if "NotoSansMonoCJK" in arg:
+            return arg.replace("NotoSansMonoCJK", "NotoSansMonoCJKChwsPatch")
         if "NotoSerifCJK" in arg:
             return arg.replace("NotoSerifCJK", "NotoSerifCJKChwsPatch")
         if "NotoSans" in arg:
             return arg.replace("NotoSans", "NotoSansChwsPatch")
+        if "NotoSansMono" in arg:
+            return arg.replace("NotoSansMono", "NotoSansMonoChwsPatch")
         return arg.replace("NotoSerif", "NotoSerifChwsPatch")
     return arg
 
