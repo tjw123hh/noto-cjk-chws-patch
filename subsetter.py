@@ -5,7 +5,7 @@ from fontTools.subset import Subsetter, Options
 import sys
 
 subsetter = Subsetter()
-subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］")
+subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—·")
 
 def namer(arg):
     if type(arg) == bytes:
