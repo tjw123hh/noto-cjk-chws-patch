@@ -6,6 +6,8 @@
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.004
+PKGVER=20240730
+PKGREL=1
 
 echo "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws-patch/tree/main/Sans#downloading-noto-sans-cjk)." > Sans/git-release-notes.md
 
@@ -31,7 +33,7 @@ zip -j -r -v 18_NotoSansChwsPatchSC.zip SubsetOTF/SC LICENSE --exclude "*.zip" "
 zip -j -r -v 19_NotoSansChwsPatchTC.zip SubsetOTF/TC LICENSE --exclude "*.zip" "*.DS_Store"
 zip -j -r -v 20_NotoSansChwsPatchHK.zip SubsetOTF/HK LICENSE --exclude "*.zip" "*.DS_Store"
 
-gh release create Sans${VERSION}_CHWS_Patch --title "Noto Sans CJK CHWS Patch Version ${VERSION} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
+gh release create Sans${PKGVER}-${PKGREL} --title "Noto Sans CJK CHWS Patch Version ${VERSION}.${PKGVER}-${PKGREL} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
         '01_NotoSansCJKChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
         '02_NotoSansCJKChwsPatch-TTF-VF.zip#All Variable TTF/OTC' \
         '03_NotoSansCJKChwsPatch-OTC.zip#All Static Language Specific OTCs' \

@@ -6,6 +6,8 @@
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.002
+PKGVER=20240730
+PKGREL=1
 
 echo "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws/tree/main/Serif#downloading-noto-serif-cjk)." > Serif/git-release-notes.md
 
@@ -27,7 +29,7 @@ zip -r -v 14_NotoSerifChwsPatchSC.zip SubsetOTF/SC LICENSE --exclude "*.zip" "*.
 zip -r -v 15_NotoSerifChwsPatchTC.zip SubsetOTF/TC LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 16_NotoSerifChwsPatchHK.zip SubsetOTF/HK LICENSE --exclude "*.zip" "*.DS_Store"
 
-gh release create Serif${VERSION}_CHWS_Patch --title "Noto Serif CJK CHWS Patch Version ${VERSION} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
+gh release create Serif${PKGVER}-${PKGREL} --title "Noto Serif CJK CHWS Patch Version ${VERSION}.${PKGVER}-${PKGREL} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
         '01_NotoSerifCJKChwsPatch.ttc.zip#Static Super OTC' \
         '02_NotoSerifCJKChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
         '03_NotoSerifCJKChwsPatch-TTF-VF.zip#All Variable TTF/OTC' \
