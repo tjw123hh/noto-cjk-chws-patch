@@ -12,7 +12,7 @@ PKGREL=1
 echo "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws-patch/tree/main/Serif#downloading-noto-serif-cjk)." > Serif/git-release-notes.md
 
 cd Serif
-zip -j -r -v 01_NotoSerifCJKChwsPatch.ttc.zip SuperOTC/NotoSerifCJKChwsPatch.ttc --exclude "*.zip" "*.DS_Store"
+zip -j -r -v 01_NotoSerifCJKChwsPatch.ttc.zip SuperOTC/NotoSerifCJKChwsPatch.ttc LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 02_NotoSerifCJKChwsPatch-OTF-VF.zip Variable/OTF Variable/OTC/NotoSerifCJKChwsPatch-VF.otf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 03_NotoSerifCJKChwsPatch-TTF-VF.zip Variable/TTF Variable/OTC/NotoSerifCJKChwsPatch-VF.ttf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 04_NotoSerifCJKChwsPatchOTC.zip OTC LICENSE --exclude "*.zip" "*.DS_Store" "OTC/NotoSerifCJKChwsPatch.ttc"
