@@ -9,8 +9,6 @@ VERSION=2.003
 PKGVER=20240731
 PKGREL=1
 
-echo "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws-patch/tree/main/Serif#downloading-noto-serif-cjk)." > Serif/git-release-notes.md
-
 cd Serif
 zip -j -r -v 01_NotoSerifCJKChwsPatch.ttc.zip SuperOTC/NotoSerifCJKChwsPatch.ttc LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 02_NotoSerifCJKChwsPatch-OTF-VF.zip Variable/OTF Variable/OTC/NotoSerifCJKChwsPatch-VF.otf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
@@ -29,7 +27,7 @@ zip -r -v 14_NotoSerifChwsPatchSC.zip SubsetOTF/SC LICENSE --exclude "*.zip" "*.
 zip -r -v 15_NotoSerifChwsPatchTC.zip SubsetOTF/TC LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 16_NotoSerifChwsPatchHK.zip SubsetOTF/HK LICENSE --exclude "*.zip" "*.DS_Store"
 
-gh release create Serif${PKGVER}-${PKGREL} --title "Noto Serif CJK CHWS Patch Version ${VERSION}.${PKGVER}-${PKGREL} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
+gh release create Serif${PKGVER}-${PKGREL} --title "Noto Serif CJK CHWS Patch Version ${VERSION}.${PKGVER}-${PKGREL} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -n "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws-patch/tree/main/Serif#downloading-noto-serif-cjk)." \
         '01_NotoSerifCJKChwsPatch.ttc.zip#Static Super OTC' \
         '02_NotoSerifCJKChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
         '03_NotoSerifCJKChwsPatch-TTF-VF.zip#All Variable TTF/OTC' \
@@ -48,5 +46,4 @@ gh release create Serif${PKGVER}-${PKGREL} --title "Noto Serif CJK CHWS Patch Ve
         '16_NotoSerifChwsPatchHK.zip#Region Specific Subset OTFs Traditional Chinese — Hong Kong (繁體中文—香港)'
 
 rm *.zip
-rm git-release-notes.md
 cd ..
