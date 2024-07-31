@@ -1,19 +1,20 @@
 #!/bin/bash
 
-# Until Sans and Serif are split into two repos on https://github.com/notofonts 
-# we have everything in this single repo https://github.com/tjw123hh/noto-cjk-chws
+# Until Sans and Serif are split into two repos on https://github.com/notofonts
+# we have everything in this single repo https://github.com/tjw123hh/noto-cjk-chws-patch
 # This script will make a new release for Sans. To do a Serif release use gh-release-noto-cjk-serif.sh
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.004
-PKGVER=20240730
+PKGVER=20240731
 PKGREL=1
 
 echo "Download individual assets from below or through the download [guide](https://github.com/tjw123hh/noto-cjk-chws-patch/tree/main/Sans#downloading-noto-sans-cjk)." > Sans/git-release-notes.md
 
 cd Sans
-zip -r -v 01_NotoSansCJKChwsPatch-OTF-VF.zip Variable/OTF Variable/OTC/NotoSansCJKChwsPatch-VF.otf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
-zip -r -v 02_NotoSansCJKChwsPatch-TTF-VF.zip Variable/TTF Variable/OTC/NotoSansCJKChwsPatch-VF.ttf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
+zip -j -r -v 00_NotoSansCJKChwsPatch.ttc.zip SuperOTC/NotoSansCJKChwsPatch.ttc LICENSE --exclude "*.zip" "*.DS_Store"
+zip -r -v 01_NotoSansCJKChwsPatch-OTF-VF.zip Variable/OTF Variable/OTC/NotoSansCJKChwsPatch-VF.otf.ttc Variable/OTC/NotoSansMonoCJKChwsPatch-VF.otf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
+zip -r -v 02_NotoSansCJKChwsPatch-TTF-VF.zip Variable/TTF Variable/OTC/NotoSansCJKChwsPatch-VF.ttf.ttc Variable/OTC/NotoSansMonoCJKChwsPatch-VF.ttf.ttc LICENSE --exclude "*.zip" "*.DS_Store"
 zip -j -r -v 03_NotoSansCJKChwsPatch-OTC.zip OTC LICENSE --exclude "*.zip" "*.DS_Store" "OTC/NotoSansCJKChwsPatch.ttc"
 zip -r -v 04_NotoSansCJKChwsPatch-OTF.zip OTF LICENSE --exclude "*.zip" "*.DS_Store"
 zip -r -v 05_NotoSansCJKChwsPatch-SubsetOTF.zip SubsetOTF LICENSE --exclude "*.zip" "*.DS_Store"
@@ -33,17 +34,19 @@ zip -j -r -v 18_NotoSansChwsPatchSC.zip SubsetOTF/SC LICENSE --exclude "*.zip" "
 zip -j -r -v 19_NotoSansChwsPatchTC.zip SubsetOTF/TC LICENSE --exclude "*.zip" "*.DS_Store"
 zip -j -r -v 20_NotoSansChwsPatchHK.zip SubsetOTF/HK LICENSE --exclude "*.zip" "*.DS_Store"
 
-gh release create Sans${PKGVER}-${PKGREL} --title "Noto Sans CJK CHWS Patch Version ${VERSION}.${PKGVER}-${PKGREL} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
-        '01_NotoSansCJKChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
-        '02_NotoSansCJKChwsPatch-TTF-VF.zip#All Variable TTF/OTC' \
-        '03_NotoSansCJKChwsPatch-OTC.zip#All Static Language Specific OTCs' \
-        '04_NotoSansCJKChwsPatch-OTF.zip#All Static Language Specific OTFs' \
-        '05_NotoSansCJKChwsPatch-SubsetOTF.zip#All Static Region Specific Subset OTFs' \
-        '06_NotoSansCJKChwsPatchjp.zip#Language Specific OTFs Japanese (日本語)' \
-        '07_NotoSansCJKChwsPatchkr.zip#Language Specific OTFs Korean (한국어)' \
-        '08_NotoSansCJKChwsPatchsc.zip#Language Specific OTFs Simplified Chinese (简体中文)' \
-        '09_NotoSansCJKChwsPatchtc.zip#Language Specific OTFs Traditional Chinese — Taiwan (繁體中文—臺灣)' \
-        '10_NotoSansCJKChwsPatchhk.zip#Language Specific OTFs Traditional Chinese — Hong Kong (繁體中文—香港)' \
+gh release create Sans${PKGVER}-${PKGREL} --title "Noto Sans CJK Version ${VERSION} (OTF, OTC, Super OTC, Subset OTF, Variable OTF/TTF)" -F git-release-notes.md --target main \
+        '00_NotoSansCJKChwsPatchChwsPatch.ttc.zip#Static Super OTC' \
+        '01_NotoSansCJKChwsPatchChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
+        '01_NotoSansCJKChwsPatchChwsPatch-OTF-VF.zip#All Variable OTF/OTC' \
+        '02_NotoSansCJKChwsPatchChwsPatch-TTF-VF.zip#All Variable TTF/OTC' \
+        '03_NotoSansCJKChwsPatchChwsPatch-OTC.zip#All Static Language Specific OTCs' \
+        '04_NotoSansCJKChwsPatchChwsPatch-OTF.zip#All Static Language Specific OTFs' \
+        '05_NotoSansCJKChwsPatchChwsPatch-SubsetOTF.zip#All Static Region Specific Subset OTFs' \
+        '06_NotoSansCJKChwsPatchChwsPatchjp.zip#Language Specific OTFs Japanese (日本語)' \
+        '07_NotoSansCJKChwsPatchChwsPatchkr.zip#Language Specific OTFs Korean (한국어)' \
+        '08_NotoSansCJKChwsPatchChwsPatchsc.zip#Language Specific OTFs Simplified Chinese (简体中文)' \
+        '09_NotoSansCJKChwsPatchChwsPatchtc.zip#Language Specific OTFs Traditional Chinese — Taiwan (繁體中文—臺灣)' \
+        '10_NotoSansCJKChwsPatchChwsPatchhk.zip#Language Specific OTFs Traditional Chinese — Hong Kong (繁體中文—香港)' \
         '11_NotoSansMonoCJKChwsPatchjp.zip#Language Specific Monospace OTFs Japanese (日本語)' \
         '12_NotoSansMonoCJKChwsPatchkr.zip#Language Specific Monospace OTFs Korean (한국어)' \
         '13_NotoSansMonoCJKChwsPatchsc.zip#Language Specific Monospace OTFs Simplified Chinese (简体中文)' \
