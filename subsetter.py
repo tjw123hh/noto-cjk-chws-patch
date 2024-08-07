@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from fontTools.ttLib import TTFont, TTCollection
-from fontTools.subset import Subsetter, Options
+from fontTools.subset import Subsetter
 import sys
 
 subsetter = Subsetter()
