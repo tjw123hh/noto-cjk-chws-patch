@@ -9,7 +9,8 @@ rm Serif/SuperOTC/NotoSerifCJK.ttc.zip
 process_font() {
     font_path="$1"
     echo "Processing font: $font_path"
-    python subsetter.py $font_path
+    add-chws -o "$(dirname $font_path)" "$font_path"
+    python subsetter.py "$font_path"
 }
 
 export -f process_font

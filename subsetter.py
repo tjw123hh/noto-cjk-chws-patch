@@ -23,7 +23,6 @@ tran = {
     }
 
 def namer(arg):
-
     if type(arg) == bytes:
         return namer(arg.decode("utf-16-be")).encode("utf-16-be")
     if type(arg) == str:

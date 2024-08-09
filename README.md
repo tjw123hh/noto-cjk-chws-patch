@@ -47,7 +47,7 @@
 
 <div lang="zh-CN">
 
-使用 [chws_tool](https://github.com/googlefonts/chws_tool) 添加了 OpenType `chws`/`vchw` 特性（标点挤压）的 Noto CJK 字体。
+使用 [chws_tool](https://github.com/googlefonts/chws_tool)（构建需安装）添加了 OpenType `chws`/`vchw` 特性（标点挤压）的 Noto CJK 字体。
 使用这些特性可以从字体层面实现标点挤压，如果有自己喜欢的字体也可以用 [chws_tool](https://github.com/googlefonts/chws_tool) 试试。
 
 原仓库虽然有为了符合 Google Fonts 要求而添加 `chws`/`vchw` 的字体（`google-fonts` 目录下），但不全。这里没有更改字体名是因为我没有对字体作任何其他更改，它可以完全替代原本的 Noto Sans CJK 字体。
