@@ -7,37 +7,31 @@ import sys
 subsetter = Subsetter()
 subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—")
 
+tran = {
+    "Noto Sans CJK": "Noto Sans CJK CHWS Patch",
+    "Noto Sans Mono CJK": "Noto Sans Mono CJK CHWS Patch",
+    "Noto Serif CJK": "Noto Serif CJK CHWS Patch",
+    "Noto Sans": "Noto Sans CHWS Patch",
+    "Noto Sans Mono": "Noto Sans Mono CHWS Patch",
+    "Noto Serif": "Noto Serif CHWS Patch",
+    "NotoSansCJK": "NotoSansCJKChwsPatch",
+    "NotoSansMonoCJK": "NotoSansMonoCJKChwsPatch",
+    "NotoSerifCJK": "NotoSerifCJKChwsPatch",
+    "NotoSans": "NotoSansChwsPatch",
+    "NotoSansMono": "NotoSansMonoChwsPatch",
+    "NotoSerif": "NotoSerifChwsPatch"
+    }
+
 def namer(arg):
+
     if type(arg) == bytes:
         return namer(arg.decode("utf-16-be")).encode("utf-16-be")
     if type(arg) == str:
-        if " " in arg:
-            if "CHWS Patch" in arg:
+        for before in tran:
+            if tran[before] in arg:
                 return arg
-            if "Noto Sans CJK" in arg:
-                return arg.replace("Noto Sans CJK", "Noto Sans CJK CHWS Patch")
-            if "Noto Sans Mono CJK" in arg:
-                return arg.replace("Noto Sans Mono CJK", "Noto Sans Mono CJK CHWS Patch")
-            if "Noto Serif CJK" in arg:
-                return arg.replace("Noto Serif CJK", "Noto Serif CJK CHWS Patch")
-            if "Noto Sans" in arg:
-                return arg.replace("Noto Sans", "Noto Sans CHWS Patch")
-            if "Noto Sans Mono" in arg:
-                return arg.replace("Noto Sans Mono", "Noto Sans Mono CHWS Patch")
-            return arg.replace("Noto Serif", "Noto Serif CHWS Patch")
-        if "ChwsPatch" in arg:
-            return arg
-        if "NotoSansCJK" in arg:
-            return arg.replace("NotoSansCJK", "NotoSansCJKChwsPatch")
-        if "NotoSansMonoCJK" in arg:
-            return arg.replace("NotoSansMonoCJK", "NotoSansMonoCJKChwsPatch")
-        if "NotoSerifCJK" in arg:
-            return arg.replace("NotoSerifCJK", "NotoSerifCJKChwsPatch")
-        if "NotoSans" in arg:
-            return arg.replace("NotoSans", "NotoSansChwsPatch")
-        if "NotoSansMono" in arg:
-            return arg.replace("NotoSansMono", "NotoSansMonoChwsPatch")
-        return arg.replace("NotoSerif", "NotoSerifChwsPatch")
+            elif before in arg:
+                return arg.replace(before, tran[before])
     return arg
 
 def list_namer(li):
