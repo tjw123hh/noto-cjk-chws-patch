@@ -4,6 +4,7 @@ unzip Sans/SuperOTC/NotoSansCJK.ttc.zip -d Sans/SuperOTC/
 rm Sans/SuperOTC/NotoSansCJK.ttc.zip
 unzip Serif/SuperOTC/NotoSerifCJK.ttc.zip -d Serif/SuperOTC/
 rm Serif/SuperOTC/NotoSerifCJK.ttc.zip
+rm Serif/SuperOTC/LICENSE
 # 原仓库由于字体文件非常大，使用zip压缩了，这里可以直接提供
 
 process_font() {
