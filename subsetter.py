@@ -5,7 +5,7 @@ from fontTools.subset import Subsetter
 import sys
 
 subsetter = Subsetter()
-subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—")
+subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—…")
 
 tran = {
     "Noto Sans CJK": "Noto Sans CJK CHWS Patch",
