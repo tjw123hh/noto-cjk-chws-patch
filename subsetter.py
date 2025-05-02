@@ -5,6 +5,8 @@ from fontTools.subset import Subsetter
 import sys
 
 subsetter = Subsetter()
+subsetter.options.name_IDs = "*"         # 保留所有 nameID
+subsetter.options.name_languages = "*"   # 保留所有语言
 subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—…")
 
 tran = {
@@ -53,9 +55,6 @@ def modify(font):
         list_namer(cff.fontNames)
         for dic in cff:
             dict_namer(dic.rawDict)
-            dic.FamilyName = namer(dic.FamilyName)
-            dic.FullName = namer(dic.FullName)
-
 
 path = sys.argv[1]
 
