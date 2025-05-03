@@ -5,7 +5,7 @@ from fontTools.subset import Subsetter
 import sys
 
 subsetter = Subsetter()
-subsetter.options.name_IDs = "*"         # 保留所有 nameID
+subsetter.options.name_IDs = "*"         # 保留所有 nameID⸺只有这样才能让子集化后的字体被 fontconfig 正确识别（默认只保留 name_ID 1~6），但不清楚是否是 Noto CJK 自己的问题
 subsetter.options.name_languages = "*"   # 保留所有语言
 subsetter.populate(text="‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—…")
 
