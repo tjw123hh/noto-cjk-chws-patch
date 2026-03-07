@@ -2,14 +2,12 @@
 
 <div lang="zh-CN">
 
-仅保留了 noto-cjk-chws 更改的标点部分与“—”（不是 fork 是因为那样文件太大了），让它更容易下载（并且可以将英文夹在这个字体和 noto-fonts-cjk 之间自定义英文字体而不影响全角引号），但是需要自己在 fontconfig 中设置。可通过 AUR 包`noto-fonts-cjk-chws-patch`直接在 Arch Linux 上安装。
-
-保留的标点：‘“〈《「『【〔〖〘〚〝（［｛｟（［·‧・；：’”〉》」』】〕〗〙〛〞〟）］｝｠、。，．！？）］—…
+保留 noto-cjk-chws 更改的标点部分与“—⸺…⋯”（不是 fork 是因为那样文件太大了），让它更容易下载（并且可以将英文夹在这个字体和 noto-fonts-cjk 之间自定义英文字体而不影响全角引号），但是需要自己在 fontconfig 中设置。可通过 AUR 包`noto-fonts-cjk-chws-patch`直接在 Arch Linux 上安装。
 
 可在`subsetter.py`中设置。
 
-- 为什么加入“—”？
-    - 不加的话如果夹入英文字体（见[#使用方式](#使用方式)），破折号的连字会消失（但其实 [W3C《中文排版需求》草稿](https://w3c.github.io/clreq/)推荐使用`U+2E3A TWO-EM DASH`\[⸺\]）。且由于 Qt 的 Bug（推测是将第一次 fontconfig 匹配到的第一个字体重新给 fontconfig 进行匹配获取字体列表），如果不加入“—”，且将该字体作为`serif`或`sans-serif`的第一个字体，会使`serif`或`sans-serif`在 Qt 程序中使用等宽字体。另外它由于 Bug 而非常细（notofonts/noto-cjk#236）。
+- 为什么加入“—⸺…⋯”？
+    - 不加的话如果夹入英文字体（见[#使用方式](#使用方式)），破折号的连字会消失（但其实 [W3C《中文排版需求》草稿](https://w3c.github.io/clreq/)推荐使用`U+2E3A TWO-EM DASH`\[⸺\]）且省略号显示不佳。且由于 Qt 的 Bug（推测是将第一次 fontconfig 匹配到的第一个字体重新给 fontconfig 进行匹配获取字体列表），如果不加入“—”，且将该字体作为`serif`或`sans-serif`的第一个字体，会使`serif`或`sans-serif`在 Qt 程序中使用等宽字体。另外它由于 Bug 而非常细（notofonts/noto-cjk#236）。
 
 字体版本同原字体。
 

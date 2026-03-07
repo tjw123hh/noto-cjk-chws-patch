@@ -6,7 +6,7 @@
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.004
-PKGVER=20250503
+PKGVER=20260307
 PKGREL=1
 
 
