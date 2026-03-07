@@ -128,10 +128,21 @@ async def modify(path):
             await change_name(ttfont)
     else:
         for spacing in builder._spacings:
-            subsetter = deepcopy(base_subsetter)
-            subsetter.populate(gids=spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set, text="—⸺…⋯")
+            # subsetter = deepcopy(base_subsetter)
+            gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
+            # subsetter.populate(gids=gids, text="—⸺…⋯")
             for ttfont in {font.ttfont for font in spacing.changed_fonts}:
-                deepcopy(subsetter).subset(ttfont)
+                # builder.build() 追加了新 lookup 但未更新 LookupCount，
+                # 导致 subset_lookups 用旧值过滤时把新增的 chws lookup 全部丢弃。
+                if "GPOS" in ttfont:
+                    ll = ttfont["GPOS"].table.LookupList
+                    if ll:
+                        ll.LookupCount = len(ll.Lookup)
+
+                gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
+                s = deepcopy(base_subsetter)
+                s.populate(gids=gids, text="—⸺…⋯")
+                s.subset(ttfont)
                 await change_name(ttfont)
 
     if font.is_collection:
