@@ -22,12 +22,12 @@ tran = {
     "NotoSerif": "NotoSerifChwsPatch"
     }
 
-subsetter = Subsetter()
-subsetter.options.name_IDs = "*"         # 保留所有 nameID
+base_subsetter = Subsetter()
+base_subsetter.options.name_IDs = "*"         # 保留所有 nameID
 # 只有保留所有 nameID（默认只保留 nameID 1~6）才能使 fontconfig 正确识别子集化后的字体，因为 Noto CJK 在 nameID=16/17（排版字族名/样式名）存储正确的字族与样式（如 Black、DemiLight、Light 等），nameID=1/2（基本的字族名/样式名）只能存储基本的 Regular、Bold 变体名。（见 https://learn.microsoft.com/en-us/typography/opentype/spec/name#name-ids。）
-subsetter.options.name_languages = "*"   # 保留所有语言
+base_subsetter.options.name_languages = "*"   # 保留所有语言
 # 保留所有语言的记录（默认只保留英文），但实际上名称都是英文的，主要是想让 fontconfig 正确识别字体的语言⸺实际上 fontconfig 还是会识别成英文，但还是先留着比较好（
-subsetter.options.ignore_missing_glyphs = True
+base_subsetter.options.ignore_missing_glyphs = True
 
 def namer(arg):
     if type(arg) == bytes:
@@ -122,16 +122,16 @@ async def modify(path):
 
                     glyphs_by_offset[reader_offset] = glyphs
 
-            subsetter = deepcopy(subsetter)
+            subsetter = deepcopy(base_subsetter)
             subsetter.populate(glyphs=glyphs, text="—⸺…⋯")
             subsetter.subset(ttfont)
             await change_name(ttfont)
     else:
         for spacing in builder._spacings:
-            subsetter = deepcopy(subsetter)
+            subsetter = deepcopy(base_subsetter)
             subsetter.populate(gids=spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set, text="—⸺…⋯")
             for ttfont in {font.ttfont for font in spacing.changed_fonts}:
-                subsetter.subset(ttfont)
+                deepcopy(subsetter).subset(ttfont)
                 await change_name(ttfont)
 
     if font.is_collection:
