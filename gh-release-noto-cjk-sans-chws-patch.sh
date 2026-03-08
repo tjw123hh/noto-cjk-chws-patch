@@ -6,8 +6,8 @@
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.004
-PKGVER=20260307
-PKGREL=2
+PKGVER=20260308
+PKGREL=1
 
 
 cd Sans

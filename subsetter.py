@@ -59,96 +59,109 @@ async def change_name(font):
         for dic in cff:
             dict_namer(dic.rawDict)
 
-async def modify(path):
-    global subsetter
+async def get_glyphs_from_gpos(ttfont):
+    gpos = ttfont["GPOS"].table
+    indices = {
+        idx
+        for fr in gpos.FeatureList.FeatureRecord
+        if fr.FeatureTag in ("chws", "vchw")
+        for idx in fr.Feature.LookupListIndex
+    }
+    glyphs = set()
+    for idx in indices:
+        for sub in gpos.LookupList.Lookup[idx].SubTable:
+            if hasattr(sub, "Coverage"):
+                glyphs.update(sub.Coverage.glyphs)
+            if hasattr(sub, "PairSet"):
+                for ps in sub.PairSet:
+                    for pvr in ps.PairValueRecord:
+                        glyphs.add(pvr.SecondGlyph)
+            if hasattr(sub, "ClassDef1"):
+                glyphs.update(sub.ClassDef1.classDefs)
+                glyphs.update(sub.ClassDef2.classDefs)
+    return glyphs
 
+async def subset(ttfont, **kwargs):
+    s = deepcopy(base_subsetter)
+    s.populate(**kwargs)
+    s.subset(ttfont)
+
+async def update_lookup_count(ttfont):
+    # builder.build() 追加了新 lookup 但未更新 LookupCount，
+    # 导致 subset_lookups 用旧值过滤时把新增的 chws lookup 全部丢弃。
+    ll = ttfont["GPOS"].table.LookupList
+    ll.LookupCount = len(ll.Lookup)
+
+async def modify_collection(font_collection, path):
+    config = Config.for_collection(font_collection)
+    builder = Builder(font_collection, config)
+    await builder.build()
+    if builder.has_spacings:
+        all_changed_ttfonts = set()
+        for spacing in builder._spacings:
+            gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
+            changed_ttfonts = {font.ttfont for font in spacing.changed_fonts}
+            all_changed_ttfonts |= changed_ttfonts
+            for ttfont in changed_ttfonts:
+                await update_lookup_count(ttfont)
+                await subset(ttfont, gids=gids, text="—⸺…⋯")
+                await change_name(ttfont)
+        for i, ttfont in list(enumerate(font_collection.ttfonts))[::-1]:
+            if ttfont not in all_changed_ttfonts:
+                del font_collection.ttfonts[i]
+    else:
+        glyphs_by_offset = {}
+        for i, ttfont in list(enumerate(font_collection.ttfonts))[::-1]:
+            reader_offset = ttfont.reader.tables.get("GPOS").offset
+            # If the font does not have `GPOS`, `reader_offset` is `None`.
+            if reader_offset is None:
+                del font_collection.ttfonts[i]
+                continue
+
+            glyphs = glyphs_by_offset.get(reader_offset)
+            if glyphs is None:
+                glyphs = await get_glyphs_from_gpos(ttfont)
+                glyphs_by_offset[reader_offset] = glyphs
+
+            if not glyphs:
+                del font_collection.ttfonts[i]
+                continue
+
+            await subset(ttfont, glyphs=glyphs, text="—⸺…⋯")
+            await change_name(ttfont)
+
+    if any(font_collection.ttfonts):
+        new_path = namer(path)
+        print(f"Saving to: {new_path}")
+        font_collection.ttcollection.save(namer(path))
+    else:
+        print("Skipped because not applicable")
+
+async def modify(path):
     print(f"Processing font: {path}")
     font = Font.load(path)
     if font.is_collection:
-        config = Config.for_collection(font)
-    else:
-        config = Config.default
+        return await modify_collection(font, path)
 
+    config = Config.default
     builder = Builder(font, config)
     await builder.build()
-    if not builder.has_spacings:
-        glyphs_by_offset = {}
-        for ttfont in font.ttfonts:
-            reader_offset = ttfont.reader.tables.get("GPOS") if ttfont.reader else None
-            # If the font does not have `GPOS`, `reader_offset` is `None`.
-            if reader_offset is None:
-                glyphs = set()
-            else:
-                glyphs = glyphs_by_offset.get(reader_offset)
-
-                if glyphs is None:
-                    gpos = ttfont["GPOS"].table
-                    lookup_count = len(gpos.LookupList.Lookup)
-
-                    PAIRPOS_FEATURES = {"chws", "vchw"}
-                    SINGLEPOS_FEATURES = {"halt", "vhal"}
-
-                    indices_pair = set()
-                    indices_single = set()
-
-                    for fr in gpos.FeatureList.FeatureRecord:
-                        tag = fr.FeatureTag
-                        for idx in fr.Feature.LookupListIndex:
-                            if idx >= lookup_count:
-                                continue
-                            if tag in PAIRPOS_FEATURES:
-                                indices_pair.add(idx)
-                            elif tag in SINGLEPOS_FEATURES:
-                                indices_single.add(idx)
-
-                    glyphs = set()
-
-                    for idx in indices_pair:
-                        for sub in gpos.LookupList.Lookup[idx].SubTable:
-                            if hasattr(sub, "Coverage"):
-                                glyphs.update(sub.Coverage.glyphs)
-                            if hasattr(sub, "PairSet"):
-                                for ps in sub.PairSet:
-                                    for pvr in ps.PairValueRecord:
-                                        glyphs.add(pvr.SecondGlyph)
-                            if hasattr(sub, "ClassDef1"):
-                                glyphs.update(sub.ClassDef1.classDefs)
-                                glyphs.update(sub.ClassDef2.classDefs)
-
-                    for idx in indices_single:
-                        for sub in gpos.LookupList.Lookup[idx].SubTable:
-                            if hasattr(sub, "Coverage"):
-                                glyphs.update(sub.Coverage.glyphs)
-
-                    glyphs_by_offset[reader_offset] = glyphs
-
-            subsetter = deepcopy(base_subsetter)
-            subsetter.populate(glyphs=glyphs, text="—⸺…⋯")
-            subsetter.subset(ttfont)
-            await change_name(ttfont)
+    ttfont = font.ttfont
+    if builder.has_spacings:
+        spacing = builder._spacings[0]
+        gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
+        await update_lookup_count(ttfont)
+        await subset(ttfont, gids=gids)
     else:
-        for spacing in builder._spacings:
-            # subsetter = deepcopy(base_subsetter)
-            gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
-            # subsetter.populate(gids=gids, text="—⸺…⋯")
-            for ttfont in {font.ttfont for font in spacing.changed_fonts}:
-                # builder.build() 追加了新 lookup 但未更新 LookupCount，
-                # 导致 subset_lookups 用旧值过滤时把新增的 chws lookup 全部丢弃。
-                if "GPOS" in ttfont:
-                    ll = ttfont["GPOS"].table.LookupList
-                    if ll:
-                        ll.LookupCount = len(ll.Lookup)
+        if not (glyphs := await get_glyphs_from_gpos(ttfont)):
+            print("Skipped because not applicable")
+            return
+        await subset(ttfont, glyphs=glyphs, text="—⸺…⋯")
 
-                gids = spacing.horizontal.glyph_id_set | spacing.vertical.glyph_id_set
-                s = deepcopy(base_subsetter)
-                s.populate(gids=gids, text="—⸺…⋯")
-                s.subset(ttfont)
-                await change_name(ttfont)
-
-    if font.is_collection:
-        font.ttcollection.save(namer(path))
-    else:
-        font.ttfont.save(namer(path))
+    await change_name(ttfont)
+    new_path = namer(path)
+    print(f"Saving to: {new_path}")
+    font.ttfont.save(new_path)
 
 async def main():
     sem = asyncio.Semaphore(4)  # 同时最多 4 个

@@ -10,8 +10,14 @@ rm Serif/SuperOTC/LICENSE
 
 find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.otf" \) ! -iname "*Chws*" -exec python subsetter.py {} +
 
-echo "删除源文件？[Y/n]"
+printf "删除源文件？[Y/n]"
 read answer
 if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
     find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.otf" -o -iname "*.woff2" \) ! -iname "*Chws*" -exec rm -f {} +
+fi
+
+printf "删除空目录？[Y/n]"
+read answer
+if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
+    find . -type d -empty -delete
 fi

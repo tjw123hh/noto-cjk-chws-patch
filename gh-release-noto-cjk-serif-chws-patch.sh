@@ -6,8 +6,8 @@
 # Requires GitHub CLI (https://github.com/cli/cli/releases)
 
 VERSION=2.003
-PKGVER=20260307
-PKGREL=2
+PKGVER=20260308
+PKGREL=1
 
 cd Serif
 zip -j -r -v 01_NotoSerifCJKChwsPatch.ttc.zip SuperOTC/NotoSerifCJKChwsPatch.ttc LICENSE --exclude "*.zip" "*.DS_Store"
